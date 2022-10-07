@@ -5,14 +5,15 @@ from apache_beam.options.pipeline_options import PipelineOptions
 INPUT_FILE = "./data/snp500source.csv"
 OUTPUT_FILE = "./output/result.txt"
 HEADER = 'Date,Open,High,Low,Close,Volume'
-class SnPOptions(PipelineOptions):
 
-  @classmethod
-  def _add_argparse_args(cls, parser):
-    parser.add_argument('--input', default='INPUT_FILE',
-                        help='Input file')
-    parser.add_argument('--output', default='OUTPUT_FILE',
-                        help='Output file')
+class SnPOptions(PipelineOptions):
+    """ Pipeline options for the SnP500 pipeline """
+    @classmethod
+    def _add_argparse_args(cls, parser):
+        parser.add_argument('--input', default='INPUT_FILE',
+                            help='Input file')
+        parser.add_argument('--output', default='OUTPUT_FILE',
+                            help='Output file')
 
 class Split(beam.DoFn):
     def process(self, element):
