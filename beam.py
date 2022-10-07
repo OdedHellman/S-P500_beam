@@ -2,12 +2,12 @@ import logging
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
 
-INPUT_FILE = "./data/snp500source.csv"
+INPUT_FILE = "./data/stock_data.csv"
 OUTPUT_FILE = "./output/result.txt"
 HEADER = 'Date,Open,High,Low,Close,Volume'
 
-class SnPOptions(PipelineOptions):
-    """ Pipeline options for the SnP500 pipeline """
+class StocksOptions(PipelineOptions):
+    """ Pipeline options for the stocks pipeline """
     @classmethod
     def _add_argparse_args(cls, parser):
         parser.add_argument('--input', default='INPUT_FILE',
@@ -46,4 +46,3 @@ def main():
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
-    main()
