@@ -11,8 +11,10 @@ class StocksOptions(PipelineOptions):
     @classmethod
     def _add_argparse_args(cls, parser):
         parser.add_argument('--input', default='INPUT_FILE',
+        parser.add_argument('--input', default=INPUT_FILE,
                             help='Input file')
         parser.add_argument('--output', default='OUTPUT_FILE',
+        parser.add_argument('--output', default=OUTPUT_FILE,
                             help='Output file')
 
 class Split(beam.DoFn):
