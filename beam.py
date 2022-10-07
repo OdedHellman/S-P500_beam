@@ -39,6 +39,7 @@ class GroupByClose(beam.DoFn):
     
     @staticmethod
     def process(element):
+        return [('Close', element['close'])]
 
 def main():
 
