@@ -16,7 +16,10 @@ class SnPOptions(PipelineOptions):
                             help='Output file')
 
 class Split(beam.DoFn):
-    def process(self, element):
+    """ Split the data using ',' as a delimiter """
+    
+    @staticmethod
+    def process(element):
         date, open, _, _, close, _ = element.split(',')
         return [{
             'date': date,
@@ -24,8 +27,22 @@ class Split(beam.DoFn):
             'close': float(close)
         }]
 
+
+class GroupByOpen(beam.DoFn):
+    """ Group the data by the open value """
+    
+    @staticmethod
+    def process(element):
+        return ['Open', (element['open'])]
+
+class GroupByClose(beam.DoFn):
+    """ Group the data by the close value """
+    
+    @staticmethod
+    def process(element):
+        return ['Close', (element['close'])]
+
 def main():
-pass
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
