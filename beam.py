@@ -42,6 +42,28 @@ class GroupByClose(beam.DoFn):
         return [('Close', element['close'])]
 
 def main():
+    options = StocksOptions()
+    
+    with beam.Pipeline(options=options) as pipeline:
+        source_lines = (pipeline |
+        'ReadFile' >> beam.io.ReadFromText(options.input, skip_header_lines=1) |
+        'Split' >> beam.ParDo(Split())
+        )
+        
+        # Claculate the mean of the open values
+        mean_open = (source_lines | beam.ParDo(GroupByOpen()) |
+                     'GroupByOpen' >> beam.GroupByKey() |
+                     'MeanOpen' >> beam.CombineValues(beam.combiners.MeanCombineFn())
+                     )
+        
+        # Claculate the mean of the close values
+        mean_close = (source_lines | beam.ParDo(GroupByClose()) |
+                      'GroupByClose' >> beam.GroupByKey() |
+                      'MeanClose' >> beam.CombineValues(beam.combiners.MeanCombineFn())
+                      )
+        
+        # Write the results to a file
+        (mean_open, mean_close) | beam.Flatten() | beam.io.WriteToText(options.output)
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
